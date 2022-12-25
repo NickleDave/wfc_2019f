@@ -47,15 +47,15 @@ def dev(session: nox.Session) -> None:
 
     # Use the venv's interpreter to install the project along with
     # all it's dev dependencies, this ensures it's installed in the right way
-    session.run(python, "-m", "pip", "install", "-e", ".[dev,test,doc]", external=True)
+    session.run(python, "-m", "pip", "install", "-e", ".[dev]", external=True)
 
 
 @nox.session
-def test(session) -> None:
+def tests(session) -> None:
     """
     Run the unit and regular tests.
     """
-    session.install(".[test]")
+    session.install(".[tests]")
     session.run("pytest", *session.posargs)
 
 
@@ -71,7 +71,7 @@ def coverage(session) -> None:
 
 
 @nox.session
-def doc(session: nox.Session) -> None:
+def docs(session: nox.Session) -> None:
     """
     Build the docs. 
 
@@ -83,7 +83,7 @@ def doc(session: nox.Session) -> None:
     
     Otherwise the docs will be built once using
     """
-    session.install(".[doc]")
+    session.install(".[docs]")
     if session.posargs:
         if "autobuild" in session.posargs:
             print("Building docs at http://127.0.0.1:8000 with sphinx-autobuild -- use Ctrl-C to quit")
