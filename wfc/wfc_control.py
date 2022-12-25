@@ -103,8 +103,8 @@ def execute_wfc(
 ) -> NDArray[np.integer]:
     timecode = datetime.datetime.now().isoformat().replace(":", ".")
     time_begin = time.perf_counter()
-    output_destination = r"./output/"
-    input_folder = r"./images/samples/"
+    output_destination = r"./results/"
+    input_folder = r"./data/images/samples/"
 
     rotations -= 1  # change to zero-based
 
