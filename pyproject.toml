@@ -24,6 +24,9 @@ dependencies  = [
 [project.optional-dependencies]
 tests = ["pytest"]
 docs = ["sphinx"]
+dev = [
+    "wfc[tests,docs]",
+]
 
 [project.urls]
 homepage = "https://github.com/ikarth/wfc_python"
