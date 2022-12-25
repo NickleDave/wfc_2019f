@@ -14,11 +14,11 @@ classifiers = [
 ]
 
 dependencies  = [
-    "hilbertcurve",
-    "imageio",
-    "matplotlib",
-    "numpy",
-    "scipy",
+    "hilbertcurve >=2.0.05",
+    "imageio >=2.23.0",
+    "matplotlib >=3.6.2",
+    "numpy >=1.24.0",
+    "scipy >=1.9.3",
 ]
 
 [project.optional-dependencies]
