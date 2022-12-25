@@ -318,18 +318,10 @@ def run_default(run_experiment: str = "simple", samples: str = "samples_referenc
                     except Exception as exc:
                         print(f"Skipped because: {exc}")
 
-            if False:  # These are included for my colab experiments, remove them if you're not me
-                os.system(
-                    'cp -rf "/content/wfc/output/*.tsv" "/content/drive/My Drive/wfc_exper/2"'
-                )
-                os.system(
-                    'cp -r "/content/wfc/output" "/content/drive/My Drive/wfc_exper/2"'
-                )
-
 def main() -> None:
     logging.basicConfig(level=logging.DEBUG)
     parser = argparse.ArgumentParser(
-        description="Geneates examples from bundled samples which will be saved to the output/ directory.",
+        description="Geneates examples from bundled samples which will be saved to the results/ directory.",
     )
     parser.add_argument(
         "-e", "--experiment",
@@ -343,8 +335,8 @@ def main() -> None:
         type=str,
         required=True,
         metavar="XML_FILE",
-        default="samples_reference.xml",
-        help="An XML file with input data.  If unsure then use '-s samples_reference.xml'",
+        default="./data/samples/samples_reference.xml",
+        help="An XML file with input data.  If unsure then use '-s ./data/samples/samples_reference.xml'",
     )
     args = parser.parse_args()
     run_default(run_experiment=args.experiment, samples=args.samples)
