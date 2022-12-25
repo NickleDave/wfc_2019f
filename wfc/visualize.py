@@ -1,20 +1,23 @@
 "Visualize the patterns into tiles and so on."
 from __future__ import annotations
-
+import itertools
 import logging
 import math
 import pathlib
-import itertools
+import struct
 from typing import Dict, Tuple
+
 import imageio  # type: ignore
 import matplotlib  # type: ignore
-import struct
 import matplotlib.pyplot as plt  # type: ignore
 import numpy as np
 from numpy.typing import NDArray
-from .wfc_patterns import pattern_grid_to_tiles
+
+from .patterns import pattern_grid_to_tiles
+
 
 logger = logging.getLogger(__name__)
+
 
 ## Helper functions
 RGB_CHANNELS = 3

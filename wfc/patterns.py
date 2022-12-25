@@ -1,12 +1,14 @@
 "Extract patterns from grids of tiles."
 from __future__ import annotations
-
+from collections import Counter
 import logging
 from typing import Any, Dict, Mapping, Optional, Tuple
-from .wfc_utilities import hash_downto
-from collections import Counter
+
 import numpy as np
 from numpy.typing import NDArray
+
+from .utilities import hash_downto
+
 
 logger = logging.getLogger(__name__)
 

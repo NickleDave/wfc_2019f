@@ -1,14 +1,20 @@
 from __future__ import annotations
-
 import datetime
+import logging
+import time
 from typing import Any, Callable, Dict, List, Literal, Optional, Set, Tuple
-from .wfc_tiles import make_tile_catalog
-from .wfc_patterns import (
+
+import imageio  # type: ignore
+import numpy as np
+from numpy.typing import NDArray
+
+from .tiles import make_tile_catalog
+from .patterns import (
     pattern_grid_to_tiles,
     make_pattern_catalog_with_rotations,
 )
-from .wfc_adjacency import adjacency_extraction
-from .wfc_solver import (
+from .adjacency import adjacency_extraction
+from .solver import (
     run,
     makeWave,
     makeAdj,
@@ -28,7 +34,7 @@ from .wfc_solver import (
     makeAntiEntropyLocationHeuristic,
     makeRarestPatternHeuristic,
 )
-from .wfc_visualize import (
+from .visualize import (
     figure_list_of_tiles,
     figure_false_color_tile_grid,
     figure_pattern_catalog,
@@ -38,11 +44,6 @@ from .wfc_visualize import (
     make_solver_loggers,
     tile_grid_to_image,
 )
-import imageio  # type: ignore
-import numpy as np
-import time
-import logging
-from numpy.typing import NDArray
 
 logger = logging.getLogger(__name__)
 

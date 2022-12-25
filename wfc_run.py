@@ -6,7 +6,7 @@ import argparse
 import datetime
 import logging
 from typing import List, Literal, TypedDict, Union
-import wfc.wfc_control as wfc_control
+import wfc.control as control
 import xml.etree.ElementTree as ET
 import os
 
@@ -29,7 +29,7 @@ def run_default(run_experiment: str = "simple", samples: str = "samples_referenc
     xdoc = ET.ElementTree(file=samples)
     default_allowed_attempts = 10
     default_backtracking = str(False)
-    log_stats_to_output = wfc_control.make_log_stats()
+    log_stats_to_output = control.make_log_stats()
 
     for xnode in xdoc.getroot():
         name = xnode.get("name", "NAME")
@@ -295,7 +295,7 @@ def run_default(run_experiment: str = "simple", samples: str = "samples_referenc
                 for x in range(screenshots):
                     print(f"-: {name} > {x}")
                     try:
-                        solution = wfc_control.execute_wfc(
+                        solution = control.execute_wfc(
                             name,
                             tile_size=tile_size,
                             pattern_width=pattern_width,
@@ -333,7 +333,6 @@ def main() -> None:
     parser.add_argument(
         "-s", "--samples",
         type=str,
-        required=True,
         metavar="XML_FILE",
         default="./data/samples/samples_reference.xml",
         help="An XML file with input data.  If unsure then use '-s ./data/samples/samples_reference.xml'",

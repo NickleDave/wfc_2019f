@@ -1,13 +1,15 @@
 """Utility data and functions for WFC"""
 from __future__ import annotations
-
 import collections
 import logging
 from typing import Any
+
 import numpy as np
 from numpy.typing import NDArray
 
+
 logger = logging.getLogger(__name__)
+
 
 CoordXY = collections.namedtuple("CoordXY", ["x", "y"])
 CoordRC = collections.namedtuple("CoordRC", ["row", "column"])

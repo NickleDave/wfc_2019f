@@ -1,9 +1,10 @@
 """Convert input data to adjacency information"""
 from __future__ import annotations
-
 from typing import Dict, List, Tuple
+
 import numpy as np
 from numpy.typing import NDArray
+
 
 def adjacency_extraction(
     pattern_grid: NDArray[np.int64],

@@ -1,19 +1,21 @@
 from __future__ import annotations
-
 from typing import Any, Dict, List, Set, Tuple
-from numpy.typing import NDArray
+
 import imageio  # type: ignore
+from numpy.typing import NDArray
 import numpy
 import numpy as np
+
 from tests.conftest import Resources
-from wfc import wfc_solver
-from wfc import wfc_tiles
-from wfc import wfc_patterns
-from wfc import wfc_adjacency
+
+from wfc import solver
+from wfc import tiles
+from wfc import patterns
+from wfc import adjacency
 
 
 def test_makeWave() -> None:
-    wave = wfc_solver.makeWave(3, 10, 20, ground=[-1])
+    wave = solver.makeWave(3, 10, 20, ground=[-1])
     # print(wave)
     # print(wave.sum())
     # print((2*10*19) + (1*10*1))
@@ -29,7 +31,7 @@ def test_entropyLocationHeuristic() -> None:
     preferences: NDArray[np.float_] = numpy.ones((3, 4), dtype=np.float_) * 0.5
     preferences[1, 2] = 0.3
     preferences[1, 1] = 0.1
-    heu = wfc_solver.makeEntropyLocationHeuristic(preferences)
+    heu = solver.makeEntropyLocationHeuristic(preferences)
     result = heu(wave)
     assert (1, 2) == result
 
@@ -47,7 +49,7 @@ def test_observe() -> None:
         assert numpy.array_equal(weights, my_wave[:, 1, 2])
         return 3
 
-    assert wfc_solver.observe(my_wave, locationHeuristic=locHeu, patternHeuristic=patHeu) == (
+    assert solver.observe(my_wave, locationHeuristic=locHeu, patternHeuristic=patHeu) == (
         3,
         1,
         2,
@@ -65,8 +67,8 @@ def test_propagate() -> None:
     ]
     wave[:, 0, 0] = False
     wave[0, 0, 0] = True
-    adj = wfc_solver.makeAdj(adjLists)
-    wfc_solver.propagate(wave, adj, periodic=False)
+    adj = solver.makeAdj(adjLists)
+    solver.propagate(wave, adj, periodic=False)
     expected_result = numpy.array(
         [
             [
@@ -90,20 +92,20 @@ def test_propagate() -> None:
 
 
 def test_run() -> None:
-    wave = wfc_solver.makeWave(3, 3, 4)
+    wave = solver.makeWave(3, 3, 4)
     adjLists = {}
     adjLists[(+1, 0)] = adjLists[(-1, 0)] = adjLists[(0, +1)] = adjLists[(0, -1)] = [
         [1],
         [0],
         [2],
     ]
-    adj = wfc_solver.makeAdj(adjLists)
+    adj = solver.makeAdj(adjLists)
 
-    first_result = wfc_solver.run(
+    first_result = solver.run(
         wave.copy(),
         adj,
-        locationHeuristic=wfc_solver.lexicalLocationHeuristic,
-        patternHeuristic=wfc_solver.lexicalPatternHeuristic,
+        locationHeuristic=solver.lexicalLocationHeuristic,
+        patternHeuristic=solver.lexicalPatternHeuristic,
         periodic=False,
     )
 
@@ -119,11 +121,11 @@ def test_run() -> None:
     def onBacktrack() -> None:
         event_log.append("backtrack")
 
-    second_result = wfc_solver.run(
+    second_result = solver.run(
         wave.copy(),
         adj,
-        locationHeuristic=wfc_solver.lexicalLocationHeuristic,
-        patternHeuristic=wfc_solver.lexicalPatternHeuristic,
+        locationHeuristic=solver.lexicalLocationHeuristic,
+        patternHeuristic=solver.lexicalPatternHeuristic,
         periodic=True,
         backtracking=True,
         onChoice=onChoice,
@@ -145,18 +147,18 @@ def test_run() -> None:
         return False
 
     try:
-        result = wfc_solver.run(
+        result = solver.run(
             wave.copy(),
             adj,
-            locationHeuristic=wfc_solver.lexicalLocationHeuristic,
-            patternHeuristic=wfc_solver.lexicalPatternHeuristic,
+            locationHeuristic=solver.lexicalLocationHeuristic,
+            patternHeuristic=solver.lexicalPatternHeuristic,
             periodic=True,
             backtracking=True,
             checkFeasible=explode,
         )
         print(result)
         happy = False
-    except wfc_solver.Contradiction:
+    except solver.Contradiction:
         happy = True
 
     assert happy
