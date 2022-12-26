@@ -1,22 +1,15 @@
 from __future__ import annotations
-from typing import Any, Dict, List, Set, Tuple
+from typing import Any, List, Tuple
 
-import imageio  # type: ignore
 from numpy.typing import NDArray
 import numpy
 import numpy as np
 
-from tests.conftest import Resources
-
 import wfc.solver
-from wfc import solver
 
 
 def test_makeWave() -> None:
     wave = wfc.solver.makeWave(3, 10, 20, ground=[-1])
-    # print(wave)
-    # print(wave.sum())
-    # print((2*10*19) + (1*10*1))
     assert wave.sum() == (2 * 10 * 19) + (1 * 10 * 1)
     assert wave[2, 5, 19] == True
     assert wave[1, 5, 19] == False
@@ -29,7 +22,7 @@ def test_entropyLocationHeuristic() -> None:
     preferences: NDArray[np.float_] = numpy.ones((3, 4), dtype=np.float_) * 0.5
     preferences[1, 2] = 0.3
     preferences[1, 1] = 0.1
-    heu = wfc.wfc.solver.makeEntropyLocationHeuristic(preferences)
+    heu = wfc.solver.makeEntropyLocationHeuristic(preferences)
     result = heu(wave)
     assert (1, 2) == result
 
@@ -66,7 +59,7 @@ def test_propagate() -> None:
     wave[:, 0, 0] = False
     wave[0, 0, 0] = True
     adj = wfc.solver.makeAdj(adjLists)
-    solver.propagate(wave, adj, periodic=False)
+    wfc.solver.propagate(wave, adj, periodic=False)
     expected_result = numpy.array(
         [
             [
