@@ -8,14 +8,12 @@ import numpy as np
 
 from tests.conftest import Resources
 
+import wfc.solver
 from wfc import solver
-from wfc import tiles
-from wfc import patterns
-from wfc import adjacency
 
 
 def test_makeWave() -> None:
-    wave = solver.makeWave(3, 10, 20, ground=[-1])
+    wave = wfc.solver.makeWave(3, 10, 20, ground=[-1])
     # print(wave)
     # print(wave.sum())
     # print((2*10*19) + (1*10*1))
@@ -31,7 +29,7 @@ def test_entropyLocationHeuristic() -> None:
     preferences: NDArray[np.float_] = numpy.ones((3, 4), dtype=np.float_) * 0.5
     preferences[1, 2] = 0.3
     preferences[1, 1] = 0.1
-    heu = solver.makeEntropyLocationHeuristic(preferences)
+    heu = wfc.wfc.solver.makeEntropyLocationHeuristic(preferences)
     result = heu(wave)
     assert (1, 2) == result
 
@@ -49,7 +47,7 @@ def test_observe() -> None:
         assert numpy.array_equal(weights, my_wave[:, 1, 2])
         return 3
 
-    assert solver.observe(my_wave, locationHeuristic=locHeu, patternHeuristic=patHeu) == (
+    assert wfc.solver.observe(my_wave, locationHeuristic=locHeu, patternHeuristic=patHeu) == (
         3,
         1,
         2,
@@ -67,7 +65,7 @@ def test_propagate() -> None:
     ]
     wave[:, 0, 0] = False
     wave[0, 0, 0] = True
-    adj = solver.makeAdj(adjLists)
+    adj = wfc.solver.makeAdj(adjLists)
     solver.propagate(wave, adj, periodic=False)
     expected_result = numpy.array(
         [
@@ -92,20 +90,20 @@ def test_propagate() -> None:
 
 
 def test_run() -> None:
-    wave = solver.makeWave(3, 3, 4)
+    wave = wfc.solver.makeWave(3, 3, 4)
     adjLists = {}
     adjLists[(+1, 0)] = adjLists[(-1, 0)] = adjLists[(0, +1)] = adjLists[(0, -1)] = [
         [1],
         [0],
         [2],
     ]
-    adj = solver.makeAdj(adjLists)
+    adj = wfc.solver.makeAdj(adjLists)
 
-    first_result = solver.run(
+    first_result = wfc.solver.run(
         wave.copy(),
         adj,
-        locationHeuristic=solver.lexicalLocationHeuristic,
-        patternHeuristic=solver.lexicalPatternHeuristic,
+        locationHeuristic=wfc.solver.lexicalLocationHeuristic,
+        patternHeuristic=wfc.solver.lexicalPatternHeuristic,
         periodic=False,
     )
 
@@ -121,11 +119,11 @@ def test_run() -> None:
     def onBacktrack() -> None:
         event_log.append("backtrack")
 
-    second_result = solver.run(
+    second_result = wfc.solver.run(
         wave.copy(),
         adj,
-        locationHeuristic=solver.lexicalLocationHeuristic,
-        patternHeuristic=solver.lexicalPatternHeuristic,
+        locationHeuristic=wfc.solver.lexicalLocationHeuristic,
+        patternHeuristic=wfc.solver.lexicalPatternHeuristic,
         periodic=True,
         backtracking=True,
         onChoice=onChoice,
@@ -147,18 +145,18 @@ def test_run() -> None:
         return False
 
     try:
-        result = solver.run(
+        result = wfc.solver.run(
             wave.copy(),
             adj,
-            locationHeuristic=solver.lexicalLocationHeuristic,
-            patternHeuristic=solver.lexicalPatternHeuristic,
+            locationHeuristic=wfc.solver.lexicalLocationHeuristic,
+            patternHeuristic=wfc.solver.lexicalPatternHeuristic,
             periodic=True,
             backtracking=True,
             checkFeasible=explode,
         )
         print(result)
         happy = False
-    except solver.Contradiction:
+    except wfc.solver.Contradiction:
         happy = True
 
     assert happy
