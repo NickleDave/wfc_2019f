@@ -11,7 +11,7 @@ from wfc import tiles
 
 def test_unique_patterns_2d(resources: Resources) -> None:
     filename = resources.get_image("samples/Red Maze.png")
-    img = imageio.imread(filename)
+    img = imageio.v2.imread(filename)
     tile_size = 1
     pattern_width = 2
     _tile_catalog, tile_grid, _code_list, _unique_tiles = tiles.make_tile_catalog(img, tile_size)
@@ -25,7 +25,7 @@ def test_unique_patterns_2d(resources: Resources) -> None:
 
 def test_make_pattern_catalog(resources: Resources) -> None:
     filename = resources.get_image("samples/Red Maze.png")
-    img = imageio.imread(filename)
+    img = imageio.v2.imread(filename)
     tile_size = 1
     pattern_width = 2
     _tile_catalog, tile_grid, _code_list, _unique_tiles = tiles.make_tile_catalog(img, tile_size)
@@ -40,7 +40,7 @@ def test_make_pattern_catalog(resources: Resources) -> None:
 
 def test_pattern_to_tile(resources: Resources) -> None:
     filename = resources.get_image("samples/Red Maze.png")
-    img = imageio.imread(filename)
+    img = imageio.v2.imread(filename)
     tile_size = 1
     pattern_width = 2
     _tile_catalog, tile_grid, _code_list, _unique_tiles = tiles.make_tile_catalog(img, tile_size)
