@@ -1,13 +1,13 @@
 from __future__ import annotations
+import pathlib
 
-import os.path
 import pytest
 
-PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
+PROJECT_ROOT = pathlib.Path(__file__).parent / '..'
 
 class Resources:
     def get_image(self, image: str) -> str:
-        return os.path.join(PROJECT_ROOT, "images", image)
+        return PROJECT_ROOT / f"data/images/{image}"
 
 
 @pytest.fixture(scope="session")
