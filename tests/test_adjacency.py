@@ -15,7 +15,7 @@ def test_adjacency_extraction(resources: Resources) -> None:
     direction_offsets = list(enumerate([(0, -1), (1, 0), (0, 1), (-1, 0)]))
 
     filename = resources.get_image("samples/Red Maze.png")
-    img = imageio.imread(filename)
+    img = imageio.v2.imread(filename)
     tile_size = 1
     pattern_width = 2
     periodic = False
